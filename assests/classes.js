@@ -68,12 +68,12 @@ class Fighter extends Sprite {
     constructor({ 
             position,  
             velocity, 
-            hitBoxOffset, 
             looking, 
             imageSrc, 
             scale = 1, 
             frame = 1,
             offset = {x: 0, y: 0},
+            hitBox = {offset: {x, y}, width: undefined, height: undefined},
             sprites //decide sprite for the character
         }) {
         super({
@@ -91,15 +91,15 @@ class Fighter extends Sprite {
         this.velocity = velocity;
         this.lastKey; //for smoother movement
         this.height = 150;
-        this.width = 35;
+        this.width = 50;
         this.hitBox = {
             position: {
                 x: this.position.x,
                 y: this.position.y
             },
-            hitBoxOffset,
-            width: 80,
-            height: 30
+            offset: hitBox.offset,
+            width: hitBox.width,
+            height: hitBox.height
         }
         //facing 
         this.facing = {
@@ -127,10 +127,12 @@ class Fighter extends Sprite {
     }
     drawHitBox() {
         c.fillStyle = 'red';
-        c.fillRect(this.hitBox.position.x, this.hitBox.position.y, this.hitBox.width, this.hitBox.height)
+        c.fillRect(this.hitBox.position.x, this.hitBox.position.y, this.hitBox.width, this.hitBox.height);
+        
     }
     //update animation
     checkCollision() {
+        console.log(this.velocity.yVec)
         if (this.position.y + this.height + this.velocity.yVec >= ground) {
             this.velocity.yVec = 0;
             this.position.y = 318; //set y position to hit the ground
@@ -171,18 +173,17 @@ class Fighter extends Sprite {
     }
     updateHitBoxPos() {
         if(this.isAttacking) {
-            this.hitBox.position.x = this.position.x + this.hitBox.hitBoxOffset.x;
-            this.hitBox.position.y = this.position.y + this.hitBox.hitBoxOffset.y;
-
+            this.hitBox.position.x = this.position.x + this.hitBox.offset.x;
+            this.hitBox.position.y = this.position.y + this.hitBox.offset.y;
         }
     }
     //flip the hitboxes
     updateHitBoxFacing() {
         if (this.looking === 'right') {
-            this.hitBox.hitBoxOffset.x = 155; // will be more or less depend on player's atributes
+            this.hitBox.offset.x = 155; // will be more or less depend on player's atributes
         }
         if (this.looking === 'left') {
-            this.hitBox.hitBoxOffset.x = -195;
+            this.hitBox.offset.x = -195;
         }
     }
     switchSprites(sprite) {  
@@ -256,6 +257,8 @@ class Fighter extends Sprite {
         this.animation();
         this.move();
         this.updateHitBoxPos();
+        c.strokeStyle = 'black'
+        c.strokeRect(this.position.x, this.position.y, this.width, this.height);
     }
 }
 

@@ -48,7 +48,7 @@ const player = new Fighter({
     frame: 8,
     scale: 2,
     offset: {
-        x: 172,
+        x: 220,
         y: 184
     },
     sprites: {
@@ -78,6 +78,14 @@ const player = new Fighter({
             frameHold: 7,
             damage: 7.5
         }       
+    },
+    hitBox: {
+        offset: {
+            x: 0, 
+            y: 40
+        },
+        width: 100, 
+        height: 40
     }
 });
 
@@ -90,16 +98,12 @@ const enemy = new Fighter({
         xVec: 0,
         yVec: 0
     },
-    hitBoxOffset: {
-        x: -195,
-        y: 40
-    },
     looking: 'left',
     imageSrc: './img/MedievalKing/Sprites/Idle.png',
     frame: 8,
     scale: 2,
     offset: {
-        x: 172,
+        x: 130,
         y: 59
     },
     sprites: {
@@ -128,8 +132,15 @@ const enemy = new Fighter({
             frame: 4, 
             frameHold: 7,
             damage: 5
-        }
-    
+        }    
+    },
+    hitBox: {
+        offset: {
+            x: 100, 
+            y: 40
+        },
+        width: 100, 
+        height: 40
     }
 });
 
@@ -252,15 +263,16 @@ function animationLoop() {
         })
             && player.isAttacking
         ) {
+            
             player.isAttacking = false;
             enemy.health -= player.damage;
             document.querySelector('#enemyHealth').style.width = enemy.health + '%';
         }
         //enemy's hitBox collisions
-        if (rectangularCollision({
+        else if (rectangularCollision({
             rect1: enemy,
             rect2: player
-        })
+        })  
             && enemy.isAttacking
         ) {
             enemy.isAttacking = false;
