@@ -151,6 +151,13 @@ class Fighter extends Sprite {
         } else {
             this.velocity.yVec += gravity; //add gravity for acceleration
         }
+        //stay in battle
+        if (this.position.x + this.width > canvas.width) {
+            this.position.x = canvas.width - this.width;
+        }
+        if (this.position.x < 0) {
+            this.position.x = 0;
+        }
     }
     move() {
         //sprites pos
