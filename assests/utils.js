@@ -16,7 +16,7 @@ let timerId;
 
 function changeHTML({ text, timerId }) {
     clearTimeout(timerId); //stop the timer
-    document.querySelector('#displayTieText').innerHTML = text;
+    document.querySelector('#displayTieText').innerHTML = "<span style=color:Black>"+ text + "</span>";
     document.querySelector('#displayTieText').style.display = 'flex';
 }
 function decreasingTimer() {
