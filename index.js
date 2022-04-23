@@ -191,7 +191,7 @@ function animationLoop() {
     }
 }
 
-if(1===2) {
+if(1===1) {
     animationLoop(); 
 }
 
@@ -246,7 +246,6 @@ window.addEventListener('keydown', (event) => {
                 enemy.lastKey = 'ArrowRight';
                 break;
             case 'ArrowLeft':
-                key.ArrowLeft.pressed = true;
                 enemy.looking = 'left';
                 enemy.lastKey = 'ArrowLeft';
                 break;
