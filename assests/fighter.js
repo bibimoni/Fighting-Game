@@ -1,5 +1,4 @@
 
-
 const EvilWizard = new Fighter({
     position: {
         x: 0,
