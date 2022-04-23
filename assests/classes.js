@@ -137,6 +137,10 @@ class Fighter extends Sprite {
         }
         //attack varibles
         this.attackDelay = this.sprites.attack1.attackDelay;
+        this.attackDelay = this.sprites.attack2.attackDelay;
+        this.knockback = 0;
+        this.knockbackState = false;
+        this.attackNunber = 1;
     }
     // drawattackBox() {
     //     c.fillStyle = 'red';
@@ -184,11 +188,24 @@ class Fighter extends Sprite {
             this.doubleJump = false;
         }, 340);
     }
-    attack() {
-        //change to attack sprites
-        this.switchSprites('attack1');
+    
+    attack(number) {
+        this.attackNumber = number; //set the attack style for knockback
+        switch(number) {
+            case 1: 
+                this.performAttack('attack1'); 
+                break;
+            case 2: 
+                this.performAttack('attack2'); 
+                break;
+        }
+    }
+    performAttack(attkSprites) {
+        //changing attack sprites
+        this.switchSprites(attkSprites); //switch to attack sprites with damage and animation
+            
         if (this.currentFrame === 0) { //only perform the attack once every hit preventing spammers
-            //setAttacking
+            //setAttacking            
             //set the animation correctly
             setTimeout(() => {
                 this.isAttacking = true;
@@ -200,6 +217,41 @@ class Fighter extends Sprite {
 
         }
     }
+    performKnockback() {         
+        //knock the fighter back depend on the direction of the sprite
+        if(this.looking === 'right') {           
+            //set the velocity of the knockback
+            if(this.knockback >= 0) {
+                this.knockback *= -1; //revert if the knockback is positive
+            }
+            this.knockbackState = true;
+            //perform the knockback action 10 times
+            for(let i = 0; i < 10; i++) {
+                console.log(this.knockback)
+                setTimeout(() => {
+                    this.position.x += (this.knockback/10); 
+                }, 30*i)             
+            }
+            this.knockbackState = false;       
+        }
+        else if(this.looking === 'left') {           
+            //set the velocity of the knockback
+            if(this.knockback <= 0) {
+                this.knockback *= -1;
+                          
+            } 
+            this.knockbackState = true; 
+            //perform the knockback action 10 times    
+            for(let i = 0; i < 10; i++) {
+                console.log(this.knockback)
+                setTimeout(() => {
+                    this.position.x += (this.knockback/10); 
+                }, 30*i)                             
+            }         
+            this.knockbackState = false;
+        }
+    }
+    
     checkDeath() {
         if (this.health > 0) {
             return;
@@ -208,6 +260,7 @@ class Fighter extends Sprite {
             this.switchSprites('death');
         }
     }
+    
     updateattackBoxPos() {
         if (this.isAttacking) {
             this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
@@ -235,6 +288,10 @@ class Fighter extends Sprite {
             && this.currentFrame < this.sprites.attack1.frame - 1) {
             return;
         }
+        if (this.image === this.sprites.attack2.image
+            && this.currentFrame < this.sprites.attack2.frame - 1) {
+                return;
+            }
         // override when fighter get hit, death
         if (this.image === this.sprites.takeHit.image
             && this.currentFrame < this.sprites.takeHit.frame - 1) {
@@ -284,6 +341,15 @@ class Fighter extends Sprite {
                     this.damage = this.sprites.attack1.damage;
                 }
                 break;
+            case 'attack2': 
+                if(this.image !== this.sprites.attack2.image) {
+                    this.currentFrame = 0;
+                    this.image = this.sprites.attack2.image;
+                    this.maxFrame = this.sprites.attack2.frame;
+                    this.frameHold = this.sprites.attack2.frameHold;
+                    this.damage = this.sprites.attack2.damage;
+                }
+                break;
             case 'takeHit': {
                 if (this.image !== this.sprites.takeHit.image) {
                     this.currentFrame = 0;
@@ -324,7 +390,7 @@ class Fighter extends Sprite {
         this.move();
         this.updateattackBoxPos();
         this.checkDeath();
-        // c.strokeStyle = 'black'
+        //c.strokeStyle = 'black'
         // c.strokeRect(this.hitBox.position.x, this.hitBox.position.y, this.hitBox.width, this.height);
     }
 }

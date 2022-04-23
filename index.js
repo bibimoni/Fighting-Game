@@ -30,8 +30,8 @@ const shop = new Sprite({
     frame: 6,
 });
 
-const player = EvilWizard;
-const enemy = MedievalKing;
+const player = MedievalKing;
+const enemy = EvilWizard;
 //for smoother movement because keyup event can stop player's movement
 //create key object
 
@@ -51,6 +51,10 @@ const key = {
 }
 
 decreasingTimer();
+setDefaultPosition();
+if(1===1) {
+    animationLoop(); 
+}
 
 //animation loop
 function animationLoop() {
@@ -145,6 +149,19 @@ function animationLoop() {
         }
 
     }
+    //set the knockback depend on the attack style
+    function setKnockback({attack, fighter}) {
+        if(attack === 1) {
+            fighter.knockback = 1024/15;
+            fighter.performKnockback();
+            return;
+        }
+        if(attack === 2) {
+            fighter.knockback = 1024*2/15;
+            fighter.performKnockback();
+            return;
+        }
+    }
     function detectCollision() {
         //player's attackBox collisions
         if (rectangularCollision({
@@ -154,6 +171,10 @@ function animationLoop() {
             && player.isAttacking
         ) {
             enemy.switchSprites('takeHit');
+            setKnockback({
+                attack: player.attackNumber, 
+                fighter: enemy
+            }); //set knockback
             player.isAttacking = false;
             enemy.health -= player.damage;
             // document.querySelector('#enemyHealth').style.width = enemy.health + '%';
@@ -169,6 +190,10 @@ function animationLoop() {
             && enemy.isAttacking
         ) {
             player.switchSprites('takeHit');
+            setKnockback({
+                attack: enemy.attackNumber, 
+                fighter: player
+            });
             enemy.isAttacking = false;
             player.health -= enemy.damage;
             // document.querySelector('#playerHealth').style.width = player.health + '%';
@@ -191,35 +216,39 @@ function animationLoop() {
     }
 }
 
-if(1===1) {
-    animationLoop(); 
-}
+
+
 
 window.addEventListener('keyup', (event) => {
-    if (!player.dead) {
+    if (!player.dead && !player.knockbackState) {
         switch (event.key) {
             //player
             case 's':
-                player.attack();
+                player.attack(1);
                 break;
-            
+            //  case ' ':
+            //      player.attack(2);
+            //      break;           
             case 'd': key.d.pressed = false; break;
             case 'a': key.a.pressed = false; break;
         }
     }
-    if (!enemy.death) {
+    if (!enemy.death && !enemy.knockbackState) {
         //enemy
         switch (event.key) {
             case 'ArrowDown':
-                enemy.attack();
-                break;            
+                enemy.attack(1);
+                break;  
+            //  case 'Control': 
+            //     enemy.attack(2);
+            //     break;       
             case 'ArrowRight': key.ArrowRight.pressed = false; break;
             case 'ArrowLeft': key.ArrowLeft.pressed = false; break;
         }
     }
 })
 window.addEventListener('keydown', (event) => {
-    if (!player.dead) {
+    if (!player.dead && !player.knockbackState) {
         switch (event.key) {
             //player's key
             case 'd':
@@ -237,7 +266,7 @@ window.addEventListener('keydown', (event) => {
                 break;
         }
     }
-    if (!enemy.dead) {
+    if (!enemy.dead && !enemy.knockbackState) {
         switch (event.key) {
             //enemy's key'
             case 'ArrowRight':

@@ -49,3 +49,15 @@ function decreasingTimer() {
         }
     }
 }
+function setDefaultPosition() {
+    enemy.looking = 'left';
+    enemy.position = {
+        x: 1024-65,
+        y: 0
+    }
+    player.looking = 'right';
+    player.position = {
+        x:0,
+        y:0
+    }
+}

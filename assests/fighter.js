@@ -45,8 +45,15 @@ const EvilWizard = new Fighter({
             imageSrc: './img/EvilWizard/Sprites/Attack1.png',
             frame: 8,
             frameHold: 7,
-            damage: 7.5,
-            attackDelay: 500, //ms
+            damage: 8.5,
+            attackDelay: 500, //set the animation to the correct frame for the attack
+        },
+        attack2: {
+            imageSrc: './img/EvilWizard/Sprites/Attack2.png',
+            frame: 8,
+            frameHold: 6,
+            damage: 60,
+            attackDelay: 500*(6/5)
         },
         takeHit: {
             imageSrc: './img/EvilWizard/Sprites/Take Hit.png',
@@ -79,7 +86,7 @@ const EvilWizard = new Fighter({
 
 const MedievalKing = new Fighter({
     position: {
-        x: 1024 - 30,
+        x: 1024 - 50,
         y: 0
     },
     velocity: {
@@ -121,6 +128,13 @@ const MedievalKing = new Fighter({
             frameHold: 7,
             damage: 5,
             attackDelay: 500 * (3 / 4)
+        },
+        attack2: {
+            imageSrc: './img/MedievalKing/Sprites/Attack3.png',
+            frame: 4,
+            frameHold: 10,
+            damage: 20,
+            attackDelay: 500 * (3 / 4),
         },
         takeHit: {
             imageSrc: './img/MedievalKing/Sprites/Take Hit.png',
