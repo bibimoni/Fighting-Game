@@ -11,7 +11,7 @@ function rectangularCollision({ rect1, rect2 }) {
     )
 }
 //timer
-let timer = 60;
+let timer = 120;
 let timerId;
 
 function changeHTML({ text, timerId }) {
