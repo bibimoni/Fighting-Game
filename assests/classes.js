@@ -210,7 +210,7 @@ class Fighter extends Sprite {
             setTimeout(() => {
                 this.isAttacking = true;
                 //attack for a period of time
-                setTimeout(() => {
+                setTimeout(() => {                   
                     this.isAttacking = false;
                 }, 50);
             }, this.attackDelay)
@@ -227,8 +227,10 @@ class Fighter extends Sprite {
             this.knockbackState = true;
             //perform the knockback action 10 times
             for(let i = 0; i < 10; i++) {
-                console.log(this.knockback)
                 setTimeout(() => {
+                    if(i < 5) {
+                        this.position.y += -10; // knock upwards a little bit
+                    }
                     this.position.x += (this.knockback/10); 
                 }, 30*i)             
             }
@@ -243,8 +245,10 @@ class Fighter extends Sprite {
             this.knockbackState = true; 
             //perform the knockback action 10 times    
             for(let i = 0; i < 10; i++) {
-                console.log(this.knockback)
                 setTimeout(() => {
+                    if(i < 5) {
+                        this.position.y += -10; // knock upwards a little bit
+                    }
                     this.position.x += (this.knockback/10); 
                 }, 30*i)                             
             }         
