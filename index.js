@@ -52,8 +52,8 @@ const key = {
 
 decreasingTimer();
 setDefaultPosition();
-if(1===1) {
-    animationLoop(); 
+if (1 === 1) {
+    animationLoop();
 }
 
 //animation loop
@@ -150,17 +150,22 @@ function animationLoop() {
 
     }
     //set the knockback depend on the attack style
-    function setKnockback({attack, fighter}) {
-        if(attack === 1) {
-            fighter.knockback = 1024/15;
-            fighter.performKnockback();
+    function setKnockback({ looking, attack, fighter }) {
+        //attack is the attack skills (1, 2, ...)
+        if (attack === 1) {
+            fighter.knockback = 1024 / 15;
+            fighter.performKnockback(looking);
             return;
         }
-        if(attack === 2) {
-            fighter.knockback = 1024*2/15;
-            fighter.performKnockback();
+        if (attack === 2) {
+            fighter.knockback = 1024 * 2 / 15;
+            fighter.performKnockback(looking);
             return;
         }
+    }
+    function takeHit({attacker, target}) {
+        attacker.isAttacking = false;
+        target.health -= attacker.damage;
     }
     function detectCollision() {
         //player's attackBox collisions
@@ -172,7 +177,8 @@ function animationLoop() {
         ) {
             enemy.switchSprites('takeHit');
             setKnockback({
-                attack: player.attackNumber, 
+                looking: player.looking,
+                attack: player.attackNumber,
                 fighter: enemy
             }); //set knockback
             player.isAttacking = false;
@@ -191,11 +197,14 @@ function animationLoop() {
         ) {
             player.switchSprites('takeHit');
             setKnockback({
-                attack: enemy.attackNumber, 
+                looking: enemy.looking,
+                attack: enemy.attackNumber,
                 fighter: player
             });
-            enemy.isAttacking = false;
-            player.health -= enemy.damage;
+            takeHit({
+                attacker: enemy,
+                target: player
+            })
             // document.querySelector('#playerHealth').style.width = player.health + '%';
             gsap.to('#playerHealth', {
                 width: player.health + '%'
@@ -238,7 +247,7 @@ window.addEventListener('keyup', (event) => {
         switch (event.key) {
             case 'ArrowDown':
                 enemy.attack(1);
-                break;  
+                break;
             //  case 'Control': 
             //     enemy.attack(2);
             //     break;       

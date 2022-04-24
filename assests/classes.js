@@ -217,9 +217,9 @@ class Fighter extends Sprite {
 
         }
     }
-    performKnockback() {         
-        //knock the fighter back depend on the direction of the sprite
-        if(this.looking === 'right') {           
+    performKnockback(opponentLooking) {        
+        //knock the fighter back depend on the direction of the attack's sprite
+        if(opponentLooking === 'left') {           
             //set the velocity of the knockback
             if(this.knockback >= 0) {
                 this.knockback *= -1; //revert if the knockback is positive
@@ -236,11 +236,10 @@ class Fighter extends Sprite {
             }
             this.knockbackState = false;       
         }
-        else if(this.looking === 'left') {           
+        else if(opponentLooking === 'right') {           
             //set the velocity of the knockback
             if(this.knockback <= 0) {
-                this.knockback *= -1;
-                          
+                this.knockback *= -1;                         
             } 
             this.knockbackState = true; 
             //perform the knockback action 10 times    
