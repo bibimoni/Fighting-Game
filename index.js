@@ -30,7 +30,7 @@ const shop = new Sprite({
     frame: 6,
 });
 
-const player = MedievalKing;
+const player = FantasyWarrior;
 const enemy = EvilWizard;
 //for smoother movement because keyup event can stop player's movement
 //create key object

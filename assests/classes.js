@@ -142,11 +142,10 @@ class Fighter extends Sprite {
         this.knockbackState = false;
         this.attackNunber = 1;
     }
-    // drawattackBox() {
-    //     c.fillStyle = 'red';
-    //     c.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height);
-
-    // }
+    drawattackBox() {
+        c.fillStyle = 'red';
+        c.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height);
+    }
     //update animation
     checkCollision() {
         if (this.position.y + this.height + this.velocity.yVec >= ground) {
@@ -386,7 +385,7 @@ class Fighter extends Sprite {
     update() {
 
         if (!this.dead) this.animation();
-        // this.drawattackBox();
+        this.drawattackBox();
         this.updateattackBoxFacing();
         this.checkCollision();
         this.drawFighter();
