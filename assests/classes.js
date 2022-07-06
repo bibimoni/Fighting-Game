@@ -385,7 +385,7 @@ class Fighter extends Sprite {
     update() {
 
         if (!this.dead) this.animation();
-        this.drawattackBox();
+        //this.drawattackBox();
         this.updateattackBoxFacing();
         this.checkCollision();
         this.drawFighter();
